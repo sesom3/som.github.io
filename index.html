@@ -1,7 +1,1423 @@
 <!DOCTYPE html>
+<style>
+    body {
+        margin: 15px;
+        background-color: #F1F3F3
+    }
+
+    .bar {
+        fill: #a31717;
+    }
+
+    .axis path,
+    .axis line {
+        fill: none;
+        stroke: #D4D8DA;
+        stroke-width: 1px;
+        shape-rendering: crispEdges;
+    }
+
+    .x path {
+        display: none;
+    }
+
+    .toolTip {
+        position: absolute;
+        display: none;
+        min-width: 80px;
+        height: auto;
+        background: none repeat scroll 0 0 #ffffff;
+        border: 1px solid #6F257F;
+        padding: 14px;
+        text-align: center;
+    
+        
+    }
+
+    .horizontal-line {
+         border-bottom: .1px solid rgb(133, 131, 131);
+      }
+
+      .container-bg {
+    background: #ea8080;
+    border-radius: 5px;
+}
+
+</style>
 <html>
-<body>
-<h1>Hello World</h1>
-<p>I'm hosted with GitHub Pages.</p>
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<!-- Load d3.js -->
+<script src="https://d3js.org/d3.v4.js"></script>
+
+<!-- Load d3-annotation -->
+<script src="https://rawgit.com/susielu/d3-annotation/master/d3-annotation.min.js"></script>
+
+<!-- Load d3.js -->
+<script src="https://d3js.org/d3.v4.js"></script>
+
+<!-- Color scale -->
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+
+<head>
+    <title>US Covid-19 Data analysis</title>
+</head>
+<!-- style="background-color:#eeeee8;" -->
+<body onload="myloadFunction1(); myloadFunction2(); myloadFunction4(); myloadFunction3();myloadFunction5()"  >
+    <div class="alert alert-dark">
+        
+            <h1 id="intro">Coronavirus (Covid-19) Data in the United States</h1>
+           
+             <h3 id="intro"><strong>Data Visualization project :: UIUC CS 416 </strong></h3>
+        <p><h4 id="intro">UIUC CS 416 - Summer 2023 - By Somnath Seth </h4> </p>
+    </div>
+
+
+
+    <div class="alert alert-success">
+
+
+        <div class="container">
+
+        <!-- <span class="italic">Data Visualization project :: UIUC CS 416 - Summer 2023 - By Somnath Seth</span> -->
+        <h3>
+            We are going to analyze the impact of Covid 19 cases in US
+
+        </h3>
+        <div class="banner">
+            <ul>
+                <li>
+                    <a href="#one" class="contents">Top 20 states in US impacted with Covid cases </a>
+                </li>
+                <li>
+                    <a href="#two" class="contents">Top 20 states in US impacted with Covid related deaths</a>
+                </li>
+                <li>
+                    <a href="#three" class="contents">Covid cases vs deaths in USA</a>
+                </li>
+                <li>
+                    <a href="#four" class="contents">Covid cases pattern state by state</a>
+                </li>
+                <li>
+                    <a href="#five" class="contents">Covid related death pattern state by state</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    </div>
+
+
+    
+    <div class="container">
+
+        <div class="banner">
+
+        <div class="well"><h2 id="one">Top 20 states in US with Covid cases</h2></div>   
+        
+        </div>
+
+        <div >
+            <label for="dropdownYear_cases"><b>Select Year:</b></label>
+            <select id="dropdownYear_cases" class="form-select" style="width: 240px;" onchange="loadSelectChange_cases(event)" >
+                <option value="All">All</option>
+                <option value="2020">2020</option>
+                <option value="2021">2021</option>
+                <option value="2022">2022</option>
+                <option value="2023">2023</option>
+            </select>
+        </div>
+        <br>
+        <div id="my_dataviz" class="well"></div>
+
+    </div>
+   
+
+    <div class="container">
+        
+        <div class="container mt-3">         
+            <ul class="pagination">
+              <li class="page-item"><a class="page-link" href="#one">Previuos</a></li>
+              <li class="page-item"><a class="page-link" href="#two">Next</a></li>
+              <li class="page-item"><a class="page-link" href="#intro">Back to Top</a></li>
+            </ul>
+          </div>
+
+          <div class="horizontal-line"></div>
+
+          <br>
+    
+          <div class="well">  
+        <h2 id="two">Top 20 states in US with Covid related deaths</h2>
+         </div>
+    <br>
+    <div>
+        <label for="dropdownYear_cases_d"><b>Select Year:</b></label>
+        <select id="dropdownYear_cases_d" class="form-select" style="width: 240px;" onchange="loadSelectChange_cases_d(event)">
+            <option value="All">All</option>
+            <option value="2020">2020</option>
+            <option value="2021">2021</option>
+            <option value="2022">2022</option>
+            <option value="2023">2023</option>
+        </select>
+    </div>
+    <br>
+    <div id="my_dataviz_d" class="well"></div>
+
+    
+
+    <div class="container">
+        <div class="banner">
+
+        <div class="container mt-3">         
+            <ul class="pagination">
+              <li class="page-item"><a class="page-link" href="#two">Previous</a></li>
+              <li class="page-item"><a class="page-link" href="#three">Next</a></li>
+              <li class="page-item"><a class="page-link" href="#intro">Back to Top</a></li>
+            </ul>
+          </div>
+          <div class="horizontal-line"></div>
+
+          <br>
+
+
+        <div class="well"> <h2 id="three">Covid cases vs deaths in USA</h2> </div>
+        <p>  </p>
+        
+        <br>
+
+        <!-- Create a div where the graph will take place -->
+            <div>
+                <div>
+                    <label for="dropdownYear"><b>Select Year:</b></label>
+                    <select id="dropdownYear" class="form-select" style="width: 240px;" onchange="loadSelectChange(event)">
+                        <option value="All">All</option>
+                        <option value="2020">2020</option>
+                        <option value="2021">2021</option>
+                        <option value="2022">2022</option>
+                        <option value="2023">2023</option>
+                    </select>
+                </div>
+                <br>
+                <div id="my_dataviz2_pie" class="well"></div>
+
+
+                </div>
+
+                <div class="container-bg">
+                  <div class="container">
+                      <!-- your content -->
+                      <div id="statval">Cases : <br> Deaths </div>
+                  </div>
+              </div>
+
+                
+
+
+
+            </div>
+
+
+        </div>
+
+  
+    </div>
+
+    <div class="container">
+
+
+        <div class="container mt-3">         
+            <ul class="pagination">
+              <li class="page-item"><a class="page-link" href="#two">Previous</a></li>
+              <li class="page-item"><a class="page-link" href="#four">Next</a></li>
+              <li class="page-item"><a class="page-link" href="#intro">Back to Top</a></li>
+            </ul>
+          </div>
+          <br>
+
+          <div class="horizontal-line"></div>
+
+          <br>
+
+        <h2 id="four">Covid cases pattern state by state</h2>
+        <p>   </p>
+        <br>
+
+        <div>
+            <div>
+                <label for="dropdownS"><b>Select State:</b></label>
+                <select id="dropdownstate" class="form-select" style="width: 240px;" >
+                </select>
+            </div>
+            <br>
+
+            <div id="my_dataviz3_line" class="well">
+
+
+            </div>
+            <div id="casesount"></div>
+        </div>
+        
+        <br>
+
+        
+        <br>
+        
+
+    </div>
+
+
+
+    
+
+    <hr>
+
+
+    <div class="container mt-3">         
+        <ul class="pagination">
+          <li class="page-item"><a class="page-link" href="#three">Previous</a></li>
+          <li class="page-item"><a class="page-link" href="#five">Next</a></li>
+          <li class="page-item"><a class="page-link" href="#intro">Back to Top</a></li>
+        </ul>
+      </div>
+      <br>
+    
+
+    <div class="container">
+
+        <h2 id="five">Covid related death pattern state by state</h2>
+        <p> 
+        </p>
+        <div>
+            <div>
+                <label for="dropdownstate"><b>Select State:</b></label>
+                <select id="dropdownstate_d" class="form-select" style="width: 240px;">
+                </select>
+            </div>
+
+            <br>
+            <div id="my_dataviz4_line" class="well">
+
+
+            </div>
+            <div id="casesount_d"></div>
+        </div>
+
+
+
+    </div>
+
+    <hr>
+    <div class="container mt-3">         
+        <ul class="pagination">
+          <li class="page-item"><a class="page-link" href="#four">Previous</a></li>
+          <li class="page-item"><a class="page-link" href="#intro">Back to Top</a></li>
+        </ul>
+      </div>
+
+      <div class="alert alert-info">
+
+        <h2>Data Reference</h2>
+        <ul>
+            <li>
+                <a href="https://github.com/nytimes/covid-19-data/tree/master/rolling-averages">Data Source</a>
+            </li>
+
+        </ul>
+    </div>
 </body>
+
 </html>
+
+<script>
+
+
+function removeDivs() {
+        d3.select("#my_dataviz1_bar").remove();
+        d3.select("#my_dataviz2_pie").remove();
+ 
+      }
+var svg 
+var margin_b
+var width_b
+var height_b
+var tooltip
+
+function myloadFunction1(){
+
+
+    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+        // set the dimensions and margins of the graph
+      margin_b = {top: 20, right: 30, bottom: 40, left: 90}
+        width_b = 560 - margin_b.left - margin_b.right
+        height_b = 500 - margin_b.top - margin_b.bottom
+    
+    // append the svg object to the body of the page
+     svg = d3.select("#my_dataviz")
+      .append("svg")
+        .attr("width", width_b + margin_b.left + margin_b.right)
+        .attr("height", height_b + margin_b.top + margin_b.bottom)
+      .append("g")
+        .attr("transform",
+              "translate(" + margin_b.left + "," + margin_b.top + ")");
+
+    tooltip = d3.select("body").append("div").attr("class", "toolTip");
+
+    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    createbar("All")
+
+
+    // -----------------------------------
+
+
+}
+
+function updatebar(data,yrvl) {
+
+
+svg.selectAll("*").remove();
+
+    data =  data.sort((a, b) => b.cases - a.cases).slice(0,20);
+
+// console.log(data.slice(0,10))
+
+// Add X axis
+var x = d3.scaleLinear()
+    .domain([0, 9999990])
+    .range([ 0, width_b]);
+svg.append("g")
+    .attr("transform", "translate(0," + height_b + ")")
+    .transition().duration(1000)
+    .call(d3.axisBottom(x))
+    .selectAll("text")
+    .attr("transform", "translate(-10,0)rotate(-45)")
+    .style("text-anchor", "end");
+
+// Y axis
+var y = d3.scaleBand()
+    .range([ 0, height_b ])
+    .domain(data.map(function(d) { return d.state; }))
+    .padding(.2);
+// svg.append("g")
+//     .call(d3.axisLeft(y))
+svg.append("g")
+    .attr("class", "myYaxis")
+    .transition().duration(1000)
+    .call(d3.axisLeft(y))
+    .selectAll("text")
+    .attr("transform", "translate(-10,0)rotate(-45)")
+    .style("text-anchor", "end");
+
+
+// Features of the annotation
+const annotations = [
+{
+note: {
+label: "Covid cases in "+yrvl,
+title: "Covid cases"
+},
+x: 250,
+y: 250,
+dy: 100,
+dx: 100
+}
+]
+
+// Add annotation to the chart
+const makeAnnotations = d3.annotation()
+.annotations(annotations)
+// d3.select("#example1")
+//   .append("g")
+//   .call(makeAnnotations)
+
+
+        // ---------------------
+
+//Bars
+svg.selectAll("myRect")
+    .data(data)
+    .enter()
+    .append("rect")
+    .attr("x", x(0) )
+    .attr("y", function(d) { return y(d.state); })
+    .attr("width", function(d) { return x(d.cases); })
+    .attr("height", y.bandwidth() )
+    .attr("fill", "#644bd6")
+    .on("mousemove", function(d){
+        tooltip
+          .style("left", d3.event.pageX - 100 + "px")
+          .style("top", d3.event.pageY - 100 + "px")
+          .style("display", "inline-block")
+          .html((d.state) + "<br>" + "  " + (d.cases));
+    })
+    .on("mouseout", function(d){ tooltip.style("display", "none");});
+    
+
+    svg.append("g")
+        .attr("class", "annotation-group")
+        .call(makeAnnotations)
+
+
+
+}
+
+function createbar(yr) {
+
+    d3.csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/rolling-averages/us-states.csv",
+            // When reading the csv, I must format variables:
+            function(d){
+              return {  date : d3.timeParse("%Y-%m-%d")(d.date).getFullYear(), state : d.state, cases : d.cases }
+            },
+
+            function(data) {
+
+                let newArray  = data
+
+                if (yr !== "All") {
+
+                
+                newArray = data.filter(function (el) {
+                        return el.date == yr 
+                    }
+                    )
+                }  
+
+
+                async function groupByState(data) {
+                    return new Promise((resolve, reject) => {
+                        try {
+                        var result = [];
+                        data.reduce(function(res, value) {
+                            // console.log(res)
+                            // console.log("-------------------------------------------------------")
+                            // console.log(value)
+                            if (!res[value.state]) {
+                            res[value.state] = { state: value.state, cases: 0 };
+                            result.push(res[value.state]);
+                            }
+                            res[value.state].cases =
+                            Number(res[value.state].cases) + Number(value.cases);
+                            return res;
+                        }, {});
+                        resolve(result); // resolve the promise with the result
+                        } catch (error) {
+                        reject(error); // reject the promise with the error
+                        }
+                    });
+                    }
+
+                const grouped =  groupByState(newArray).then(data=>{
+                    console.log(data);
+
+                    updatebar(data,yr)
+
+
+
+                }); 
+                
+                console.log("-----------------------")
+
+
+
+
+            // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+          
+
+    
+
+            // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+
+            })
+
+
+}
+
+function loadSelectChange_cases(event) {
+
+var yr_value = event.target.value;
+
+// console.log(yr_value)
+
+createbar(yr_value)
+
+}
+
+
+// #####################################################
+
+
+var svg_d 
+var margin_b_d
+var width_b_d
+var height_b_d
+var tooltip_d
+
+
+function myloadFunction5(){
+
+
+    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+        // set the dimensions and margins of the graph
+      margin_b_d = {top: 20, right: 30, bottom: 40, left: 90}
+        width_b_d = 560 - margin_b_d.left - margin_b_d.right
+        height_b_d = 500 - margin_b_d.top - margin_b_d.bottom
+    
+    // append the svg object to the body of the page
+     svg_d = d3.select("#my_dataviz_d")
+      .append("svg")
+        .attr("width", width_b_d + margin_b_d.left + margin_b_d.right)
+        .attr("height", height_b_d + margin_b_d.top + margin_b_d.bottom)
+      .append("g")
+        .attr("transform",
+              "translate(" + margin_b_d.left + "," + margin_b_d.top + ")");
+
+    tooltip_d = d3.select("body").append("div").attr("class", "toolTip");
+
+    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    createbar_d("All")
+
+
+    // -----------------------------------
+
+
+}
+
+function updatebar_d(data,yrvl) {
+
+
+svg_d.selectAll("*").remove();
+
+    data =  data.sort((a, b) => b.deaths - a.deaths).slice(0,20);
+
+// console.log(data.slice(0,10))
+
+// Add X axis
+var x = d3.scaleLinear()
+    .domain([0, 99999])
+    .range([ 0, width_b_d]);
+svg_d.append("g")
+    .attr("transform", "translate(0," + height_b_d + ")")
+    .transition().duration(1000)
+    .call(d3.axisBottom(x))
+    .selectAll("text")
+    .attr("transform", "translate(-10,0)rotate(-45)")
+    .style("text-anchor", "end");
+
+// Y axis
+var y = d3.scaleBand()
+    .range([ 0, height_b_d ])
+    .domain(data.map(function(d) { return d.state; }))
+    .padding(.2);
+// svg.append("g")
+//     .call(d3.axisLeft(y))
+svg_d.append("g")
+    .attr("class", "myYaxis")
+    .transition().duration(1000)
+    .call(d3.axisLeft(y))
+    .selectAll("text")
+    .attr("transform", "translate(-10,0)rotate(-45)")
+    .style("text-anchor", "end");
+
+
+// Features of the annotation
+const annotations = [
+{
+note: {
+label: "Covid related deaths in "+yrvl,
+title: "Covid Deaths"
+},
+x: 250,
+y: 250,
+dy: 100,
+dx: 100
+}
+]
+
+// Add annotation to the chart
+const makeAnnotations = d3.annotation()
+.annotations(annotations)
+// d3.select("#example1")
+//   .append("g")
+//   .call(makeAnnotations)
+
+
+        // ---------------------
+
+//Bars
+svg_d.selectAll("myRect")
+    .data(data)
+    .enter()
+    .append("rect")
+    .attr("x", x(0) )
+    .attr("y", function(d) { return y(d.state); })
+    .attr("width", function(d) { return x(d.deaths); })
+    .attr("height", y.bandwidth() )
+    .attr("fill", "#e0543b")
+    .on("mousemove", function(d){
+        tooltip_d
+          .style("left", d3.event.pageX - 100 + "px")  // 50
+          .style("top", d3.event.pageY - 100 + "px")   // 70
+          .style("display", "inline-block")
+          .html((d.state) + "<br>" + "  " + (d.deaths));
+    })
+    .on("mouseout", function(d){ tooltip.style("display", "none");});
+    
+
+    svg_d.append("g")
+        .attr("class", "annotation-group")
+        .call(makeAnnotations)
+
+
+
+}
+
+function createbar_d(yr) {
+
+    d3.csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/rolling-averages/us-states.csv",
+            // When reading the csv, I must format variables:
+            function(d){
+              return {  date : d3.timeParse("%Y-%m-%d")(d.date).getFullYear(), state : d.state, deaths : d.deaths }
+            },
+
+            function(data) {
+
+                let newArray  = data
+
+                if (yr !== "All") {
+
+                
+                newArray = data.filter(function (el) {
+                        return el.date == yr 
+                    }
+                    )
+                }  
+
+
+                async function groupByState(data) {
+                    return new Promise((resolve, reject) => {
+                        try {
+                        var result = [];
+                        data.reduce(function(res, value) {
+                            // console.log(res)
+                            // console.log("-------------------------------------------------------")
+                            // console.log(value)
+                            if (!res[value.state]) {
+                            res[value.state] = { state: value.state, deaths: 0 };
+                            result.push(res[value.state]);
+                            }
+                            res[value.state].deaths =
+                            Number(res[value.state].deaths) + Number(value.deaths);
+                            return res;
+                        }, {});
+                        resolve(result); // resolve the promise with the result
+                        } catch (error) {
+                        reject(error); // reject the promise with the error
+                        }
+                    });
+                    }
+
+                const grouped =  groupByState(newArray).then(data=>{
+                    console.log(data);
+
+                    updatebar_d(data,yr)
+
+
+
+                }); 
+                
+                console.log("-----------------------")
+
+
+
+
+            // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+          
+
+    
+
+            // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+
+            })
+
+
+}
+
+function loadSelectChange_cases_d(event) {
+
+var yr_value = event.target.value;
+
+// console.log(yr_value)
+
+createbar_d(yr_value)
+
+}
+
+
+
+
+// ######################################################
+
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 
+
+    // set the dimensions and margins of the graph
+    var width_pie = 450
+    var height_pie = 450
+    var margin_pie = 40
+    
+    // The radius of the pieplot is half the width or half the height (smallest one). I subtract a bit of margin.
+    var radius = Math.min(width_pie, height_pie) / 2 - margin_pie
+    
+    // append the svg object to the div called 'my_dataviz'
+    var svg_pie = d3.select("#my_dataviz2_pie")
+      .append("svg")
+        .attr("width", width_pie)
+        .attr("height", height_pie)
+      .append("g")
+        .attr("transform", "translate(" + width_pie / 2 + "," + height_pie / 2 + ")");
+    
+    // create 2 data_set
+    var data1 = {cases: 9, deaths: 20}
+    var data2 = {cases: 6, deaths: 16}
+    var data3 = {cases: 7, deaths: 16}
+    var data4 = {cases: 8, deaths: 16}
+    
+    // set the color scale
+    var color = d3.scaleOrdinal()
+      .domain(["cases", "deaths"])
+      .range(d3.schemeDark2);
+    
+    // A function that create / update the plot for a given variable:
+    function update(data) {
+    
+      // Compute the position of each group on the pie:
+      var pie = d3.pie()
+        .value(function(d) {return d.value; })
+        .sort(function(a, b) { console.log(a) ; return d3.ascending(a.key, b.key);} ) // This make sure that group order remains the same in the pie chart
+      var data_ready = pie(d3.entries(data))
+    
+      // map to data
+      var u = svg_pie.selectAll("path")
+        .data(data_ready)
+
+
+    // shape helper to build arcs:
+        var arc = d3.arc()
+        .innerRadius(0)
+        .outerRadius(radius)
+    
+      // Build the pie chart: Basically, each part of the pie is a path that we build using the arc function.
+      u
+        .enter()
+        .append('path')
+        .merge(u)
+        .transition()
+        .duration(1000)
+        .attr('d', d3.arc()
+          .innerRadius(0)
+          .outerRadius(radius)
+        )
+        .attr('fill', function(d){ return(color(d.data.key)) })
+        .attr("stroke", "white")
+        .style("stroke-width", "2px")
+        .style("opacity", 1)
+
+        // Now add the annotation. Use the centroid method to get the best coordinates
+        u.enter()
+        .append('text')
+        .transition()
+        .duration(1000)
+        .text((d) => {
+            return d.data.key.charAt(0).toUpperCase() + d.data.key.slice(1)})
+        .attr("transform", d => "translate(" + arc.centroid(d) + ")");
+    
+      // remove the group that is not present anymore
+      u
+        .exit()
+        .remove()
+
+      
+        document.getElementById("statval").innerHTML= "<b> Cases : " + data.cases + "<br>" + "Deathes : " + data.deaths + " ( "+ ((Number(data.deaths)/Number(data.cases))*100).toFixed(2) + "%)</b>"
+
+        
+
+
+    
+    }
+  
+
+    function createpie(yr) { 
+
+      d3.csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/rolling-averages/us-states.csv",
+            // When reading the csv, I must format variables:
+            function(d){
+                 return { date : d3.timeParse("%Y-%m-%d")(d.date).getFullYear(), state: d.state, cases : d.cases, deaths : d.deaths }
+             },
+
+            function(data) {
+
+              // https://www.geeksforgeeks.org/how-to-filter-object-array-based-on-attributes/
+              let newArray  = data
+
+              if (yr !== "All") {
+
+                
+                newArray = data.filter(function (el) {
+                      return el.date == yr 
+                  }
+                  )
+              }  
+
+                  // newArray = newArray.slice(0,20).cases
+                console.log(newArray.slice(0,20));
+                var tot_cases = 0
+                newArray.forEach(function (arrayItem) {
+                    tot_cases = Number(tot_cases) + Number(arrayItem.cases);
+                      
+                  });
+                  console.log(tot_cases);
+
+                  var tot_deaths = 0
+                newArray.forEach(function (arrayItem) {
+                  tot_deaths = Number(tot_deaths) + Number(arrayItem.deaths);
+                      
+                  });
+                  console.log(tot_deaths);
+
+                var data1 = {cases: tot_cases, deaths: tot_deaths}
+
+                update(data1)
+
+                console.log(data1);
+
+
+            })
+
+
+
+    }
+
+    function loadSelectChange(event) {
+
+        var yr_value = event.target.value;
+
+        console.log(yr_value)
+
+        createpie(yr_value)
+
+    }
+
+    // Initialize the plot with the first dataset
+
+    function myloadFunction2(){
+
+        console.log("pipipipipi")
+
+
+        createpie("All")
+
+  
+}
+
+//  &&&&&&&&&&&&&&&&&&       Line chart starts        &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+// // set the dimensions and margins of the graph
+// var margin = {top: 30, right: 60, bottom: 30, left: 60},
+//             width = 1000 - margin.left - margin.right,
+//             height = 500 - margin.top - margin.bottom;
+
+//         // append the svg object to the body of the page
+//         var svg_line = d3.select("#my_dataviz3_line")
+//           .append("svg")
+//             .attr("width", width + margin.left + margin.right)
+//             .attr("height", height + margin.top + margin.bottom)
+//           .append("g")
+//             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        // var div = document.createElement("div");
+        // div.id = "tooltip";
+        // // div.style.position = "absolute";
+        // div.style.padding = "5px";
+        // div.style.backgroundColor = "white";
+        // document.getElementById("my_dataviz4").appendChild(div);
+
+// set the dimensions and margins of the graph
+var margin = {top: 30, right: 60, bottom: 30, left: 60},
+            width = 1000 - margin.left - margin.right,
+            height = 500 - margin.top - margin.bottom;
+
+var svg_line
+    
+
+function update_line() {
+
+
+
+    // document.getElementById("daily_cases").style.color = "white";
+    //       document.getElementById("daily_avg_cases").style.color = "black";
+    //       document.getElementById("daily_cases").style.background = "#666";
+    //       document.getElementById("daily_avg_cases").style.background = "#f1f1f1";
+
+        //   d3.selectAll("path").remove();
+
+          // var bisectDate = d3.bisector(function(d) { return d.date; }).left;
+
+          //Read the data
+          d3.csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/rolling-averages/us-states.csv", 
+            // When reading the csv, I must format variables:
+            function(d){
+              return { date : d3.timeParse("%Y-%m-%d")(d.date), cases : d.cases, state : d.state }
+            },
+
+            function(data) {
+              var allGroup = d3.map(data, function(d){return(d.state)}).keys();
+              allGroup.sort();
+              console.log(allGroup);
+
+              // add the options to the button
+              d3.select("#dropdownstate")
+                .selectAll('myOptions')
+                .data(allGroup)
+                .enter()
+                .append('option')
+                .text(function (d) { return d; }) // text showed in the menu
+                .attr("value", function (d) { return d; }) // corresponding value returned by the button
+
+              // A color scale: one color for each group
+              var myColor = d3.scaleOrdinal()
+                .domain(allGroup)
+                .range(["#24c9d7", "#cb9b64", "#866888", "#22e67a", "#e509ae", "#9dabfa", "#437e8a", "#ff7463", "#ff7b91", "#94aa05", "#ac5906", "#82a68d", "#fe6616", "#7a7352", "#f9bc0f", "#b65d66", "#07a2e6", "#c091ae", "#8a91a7", "#88fc07", "#d47270", "#9e8010", "#10b437", "#cf7c97", "#f92b75", "#07c99d", "#a946aa", "#bfd544", "#16977e", "#ff6ac8", "#a88178", "#5776a9", "#678007", "#fa9316", "#85c070", "#6aa2a9", "#989e5d", "#fe9169", "#cd714a", "#6ed014", "#c5639c", "#c23271", "#d7908c", "#678275", "#c5a121", "#a978ba", "#ee534e", "#d24506", "#59c3fa", "#ca7b0a"]);
+
+              
+              function returnDatum(group) {
+                var newData = [];
+                for (let i = 0; i < data.length; i++) {
+                  if (data[i].state == group){
+                    newData.push(data[i]);
+                  }                  
+                }
+                return newData;
+              }
+
+        var bisectDate = d3.bisector(function(d) { return d.date; }).left;     
+        const tooltip = d3.select('#tooltip');
+        const tooltipLine = svg_line.append('line');  
+        // Add X axis --> it is a date format
+        var x = d3.scaleTime()
+              .range([ 0, width ]);
+        var xAxis = d3.axisBottom().scale(x);
+        svg_line.append("g")
+              .attr("transform", "translate(0," + height + ")")
+              .attr("class","myXaxis")
+
+        // Initialize an Y axis
+        var y = d3.scaleLinear().range([height, 0]);
+        var yAxis = d3.axisLeft().scale(y);
+        svg_line.append("g")
+           .attr("class","myYaxis")
+
+              x.domain(d3.extent(data, function(d) { return d.date; }));
+              svg_line.selectAll(".myXaxis")
+                // .transition()
+                // .duration(3000)
+                .call(xAxis);
+
+            //   var currentlySelectedOption = d3.select("#selectButton").property("value");
+              var currentlySelectedOption = "Alabama"
+
+              y.domain([0, d3.max(returnDatum(currentlySelectedOption), function(d) { return +d.cases;  }) ]);
+              svg_line.selectAll(".myYaxis")
+                  .transition()
+                  .duration(1500)
+                  .call(yAxis);
+
+              // Initialize line with first group of the list
+              var line = svg_line
+                .append('g')
+                .append("path")
+                  .datum(returnDatum(currentlySelectedOption))
+                  // .transition()
+                  // .duration(1000)
+                  .attr("d", d3.line()
+                    .x(function(d) { return x(d.date) })
+                    .y(function(d) { return y(+d.cases) })
+                  )
+                  .attr("stroke", function(d){ return myColor(currentlySelectedOption) })
+                  .style("stroke-width", 2)
+                  .style("fill", "none")
+
+
+              function createToolTip(data) {
+
+                  tipBox = svg_line.append('rect')
+                  .attr('width', width)
+                  .attr('height', height)
+                  .attr('opacity', 0)
+                  .attr("class", "overlay")
+                  .on('mousemove', drawTooltip)
+                  .on('mouseout', removeTooltip);
+
+                function removeTooltip() {
+                //   if (tooltip) tooltip.style('display', 'none');
+                //   if (tooltipLine) tooltipLine.attr('stroke', 'none');
+
+                document.getElementById("casesount").innerHTML = ""
+
+                }
+
+                function drawTooltip() {
+
+                  const x0 = x.invert(d3.mouse(tipBox.node())[0]);
+                  var i = bisectDate(data, x0, 1),
+                        d0 = data[i - 1],
+                        d1 = data[i],
+                        d = x0 - d0.date > d1.date - x0 ? d1 : d0;
+
+                  var format_date = d3.timeFormat("%m/%d/%y");
+                    
+
+                  document.getElementById("casesount").innerHTML = format_date(d.date) + " - Daily Cases: " + d.cases
+
+
+                  
+                }
+
+              }
+
+              createToolTip(returnDatum(currentlySelectedOption))
+
+              // A function that update the chart
+              function update(selectedGroup) {
+
+                // create the Y axis
+                y.domain([0, d3.max(returnDatum(selectedGroup), function(d) { return +d.cases;  }) ]);
+                svg_line.selectAll(".myYaxis")
+                  .transition()
+                  .duration(1500)
+                  .call(yAxis);
+
+                // Create new data with the selection?
+                var dataFilter = data.filter(function(d){return d.state==selectedGroup})
+
+                // Give these new data to update line
+                line
+                    .datum(dataFilter)
+                    .transition()
+                    .duration(3000)
+                    .attr("d", d3.line()
+                      .x(function(d) { return x(d.date) })
+                      .y(function(d) { return y(+d.cases) })
+                    )
+                    .attr("stroke", function(d){ return myColor(selectedGroup) })
+
+              }
+
+              // When the button is changed, run the updateChart function
+              d3.select("#dropdownstate").on("change", function(d) {
+                  // recover the option that has been chosen
+                  var selectedOption = d3.select(this).property("value")
+                  // run the updateChart function with this selected option
+                  update(selectedOption)
+                  // setTimeout(function(){
+                  //   plotToolTip(selectedOption)
+                  // }, 1500); 
+                  // plotToolTip(selectedOption)
+                  createToolTip(returnDatum(selectedOption))
+              })
+
+          })
+
+
+
+
+
+}
+
+function myloadFunction3(){
+
+console.log("Line line line")
+
+// my_dataviz3_line
+
+
+        // append the svg object to the body of the page
+svg_line = d3.select("#my_dataviz3_line")
+          .append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+          .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+update_line()
+
+
+}
+
+
+
+// &&&&&&&&&&&&&&&&&&&&&&&&&  Line Chart ends   &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+
+//  AAAAAAAAAAAAAAAAAAAA       Line chart starts   4     AAAAAAAAAAAAAAAAAAAAAAAAAA
+
+// // set the dimensions and margins of the graph
+// var margin = {top: 30, right: 60, bottom: 30, left: 60},
+//             width = 1000 - margin.left - margin.right,
+//             height = 500 - margin.top - margin.bottom;
+
+// // append the svg object to the body of the page
+// var svg_line_d = d3.select("#my_dataviz4_line")
+//                     .append("svg")
+//                     .attr("width", width + margin.left + margin.right)
+//                     .attr("height", height + margin.top + margin.bottom)
+//                     .append("g")
+//                     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+// var div = document.createElement("div");
+// div.id = "tooltip";
+// // div.style.position = "absolute";
+// div.style.padding = "5px";
+// div.style.backgroundColor = "white";
+// // document.getElementById("my_dataviz4").appendChild(div);
+
+
+        
+
+var svg_line_d
+
+// update_line_d()
+
+function update_line_d() {
+
+
+
+    // document.getElementById("daily_cases").style.color = "white";
+    //       document.getElementById("daily_avg_cases").style.color = "black";
+    //       document.getElementById("daily_cases").style.background = "#666";
+    //       document.getElementById("daily_avg_cases").style.background = "#f1f1f1";
+
+        //   d3.selectAll("path").remove();
+
+          // var bisectDate = d3.bisector(function(d) { return d.date; }).left;
+
+          //Read the data
+          d3.csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/rolling-averages/us-states.csv", 
+            // When reading the csv, I must format variables:
+            function(d){
+              return { date : d3.timeParse("%Y-%m-%d")(d.date), deaths : d.deaths, state : d.state }
+            },
+
+            function(data) {
+              var allGroup = d3.map(data, function(d){return(d.state)}).keys();
+              allGroup.sort();
+              console.log(allGroup);
+
+              // add the options to the button
+              d3.select("#dropdownstate_d")
+                .selectAll('myOptions')
+                .data(allGroup)
+                .enter()
+                .append('option')
+                .text(function (d) { return d; }) // text showed in the menu
+                .attr("value", function (d) { return d; }) // corresponding value returned by the button
+
+              // A color scale: one color for each group
+              var myColor = d3.scaleOrdinal()
+                .domain(allGroup)
+                .range(["#CD5C5C", "#F08080", "#866888", "#FA8072", "#E9967A", "#FFA07A", "#DC143C", "#FF0000", "#B22222", "#8B0000", "#FF4500", "#FF6347", "#FF7F50", "#FF1493", "#C71585", "#b65d66", "#07a2e6", "#c091ae"]);
+
+              
+              function returnDatum(group) {
+                var newData = [];
+                for (let i = 0; i < data.length; i++) {
+                  if (data[i].state == group){
+                    newData.push(data[i]);
+                  }                  
+                }
+                return newData;
+              }
+
+        var bisectDate = d3.bisector(function(d) { return d.date; }).left;     
+        const tooltip = d3.select('#tooltip');
+        // const tooltipLine = svg_line_d.append('line');  
+        // Add X axis --> it is a date format
+        var x = d3.scaleTime()
+              .range([ 0, width ]);
+        var xAxis = d3.axisBottom().scale(x);
+        svg_line_d.append("g")
+              .attr("transform", "translate(0," + height + ")")
+              .attr("class","myXaxis")
+
+        // Initialize an Y axis
+        var y = d3.scaleLinear().range([height, 0]);
+        var yAxis = d3.axisLeft().scale(y);
+        svg_line_d.append("g")
+           .attr("class","myYaxis")
+
+              x.domain(d3.extent(data, function(d) { return d.date; }));
+              svg_line_d.selectAll(".myXaxis")
+                // .transition()
+                // .duration(3000) cases
+                .call(xAxis);
+
+            //   var currentlySelectedOption = d3.select("#selectButton").property("value");
+              var currentlySelectedOption = "Alabama"
+
+              y.domain([0, d3.max(returnDatum(currentlySelectedOption), function(d) { return +d.deaths;  }) ]);
+              svg_line_d.selectAll(".myYaxis")
+                  .transition()
+                  .duration(1500)
+                  .call(yAxis);
+
+              // Initialize line with first group of the list
+              var line = svg_line_d
+                .append('g')
+                .append("path")
+                  .datum(returnDatum(currentlySelectedOption))
+                  // .transition()
+                  // .duration(1000)
+                  .attr("d", d3.line()
+                    .x(function(d) { return x(d.date) })
+                    .y(function(d) { return y(+d.deaths) })
+                  )
+                  .attr("stroke", function(d){ return myColor(currentlySelectedOption) })
+                  .style("stroke-width", 2)
+                  .style("fill", "none")
+
+
+              function createToolTip(data) {
+
+                  tipBox = svg_line_d.append('rect')
+                  .attr('width', width)
+                  .attr('height', height)
+                  .attr('opacity', 0)
+                  .attr("class", "overlay")
+                  .on('mousemove', drawTooltip)
+                  .on('mouseout', removeTooltip);
+
+                function removeTooltip() {
+                //   if (tooltip) tooltip.style('display', 'none');
+                //   if (tooltipLine) tooltipLine.attr('stroke', 'none');
+
+                document.getElementById("casesount_d").innerHTML = ""
+
+                }
+
+                function drawTooltip() {
+
+                  const x0 = x.invert(d3.mouse(tipBox.node())[0]);
+                  var i = bisectDate(data, x0, 1),
+                        d0 = data[i - 1],
+                        d1 = data[i],
+                        d = x0 - d0.date > d1.date - x0 ? d1 : d0;
+
+                  var format_date = d3.timeFormat("%m/%d/%y");
+                    
+
+                  document.getElementById("casesount_d").innerHTML = format_date(d.date) + " - Daily Deaths: " + d.deaths
+
+
+                  
+                }
+
+              }
+
+              createToolTip(returnDatum(currentlySelectedOption))
+
+              // A function that update the chart
+              function update(selectedGroup) {
+
+                // create the Y axis
+                y.domain([0, d3.max(returnDatum(selectedGroup), function(d) { return +d.deaths;  }) ]);
+                svg_line_d.selectAll(".myYaxis")
+                  .transition()
+                  .duration(1500)
+                  .call(yAxis);
+
+                // Create new data with the selection?
+                var dataFilter = data.filter(function(d){return d.state==selectedGroup})
+
+                // Give these new data to update line
+                line
+                    .datum(dataFilter)
+                    .transition()
+                    .duration(3000)
+                    .attr("d", d3.line()
+                      .x(function(d) { return x(d.date) })
+                      .y(function(d) { return y(+d.deaths) })
+                    )
+                    .attr("stroke", function(d){ return myColor(selectedGroup) })
+
+              }
+
+              // When the button is changed, run the updateChart function
+              d3.select("#dropdownstate_d").on("change", function(d) {
+                  // recover the option that has been chosen
+                  var selectedOption = d3.select(this).property("value")
+                  // run the updateChart function with this selected option
+                  update(selectedOption)
+                  // setTimeout(function(){
+                  //   plotToolTip(selectedOption)
+                  // }, 1500); 
+                  // plotToolTip(selectedOption)
+                  createToolTip(returnDatum(selectedOption))
+              })
+
+          })
+
+
+
+
+
+}
+
+function myloadFunction4(){
+
+console.log(" ---- -- - - -  - - Line line line  myloadFunction4")
+
+// my_dataviz3_line
+
+// set the dimensions and margins of the graph
+var margin = {top: 30, right: 60, bottom: 30, left: 60},
+            width = 1000 - margin.left - margin.right,
+            height = 500 - margin.top - margin.bottom;
+
+// append the svg object to the body of the page
+svg_line_d = d3.select("#my_dataviz4_line")
+                    .append("svg")
+                    .attr("width", width + margin.left + margin.right)
+                    .attr("height", height + margin.top + margin.bottom)
+                    .append("g")
+                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+var div = document.createElement("div");
+div.id = "tooltip";
+// div.style.position = "absolute";
+div.style.padding = "5px";
+div.style.backgroundColor = "white";
+// document.getElementById("my_dataviz4").appendChild(div);
+
+
+update_line_d()
+
+
+}
+
+
+
+// AAAAAAAAAAAAAAAAAAAAAAAAAAAA Line chart end 4 AAAAAAAAAAAAAAAAAAAA
+
+    </script>
